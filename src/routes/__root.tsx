@@ -77,19 +77,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Aaryan Chandale — AI Engineer & Full Stack Developer" },
+      {
+        name: "description",
+        content:
+          "Portfolio of Aaryan Chandale — B.Tech CS student building intelligent software with AI, Machine Learning, and Modern Web Technologies.",
+      },
+      { name: "author", content: "Aaryan Chandale" },
+      { property: "og:title", content: "Aaryan Chandale — AI Engineer & Full Stack Developer" },
+      {
+        property: "og:description",
+        content: "AI Engineer · Full Stack Developer · Data Analyst",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap",
       },
     ],
   }),
