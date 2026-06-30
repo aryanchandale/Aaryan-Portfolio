@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowRight, Mail } from "lucide-react";
 
 const ROLES = ["AI Engineer", "Full Stack Developer", "Data Analyst"];
@@ -31,148 +31,159 @@ function useTyping() {
   return text;
 }
 
+const reveal = {
+  hidden: { opacity: 0, y: 24 },
+  show: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
+  }),
+};
+
 export function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-  const x1 = useTransform(sx, (v) => v * 30);
-  const y1 = useTransform(sy, (v) => v * 30);
-  const x2 = useTransform(sx, (v) => v * -40);
-  const y2 = useTransform(sy, (v) => v * -40);
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      mx.set((e.clientX - w / 2) / w);
-      my.set((e.clientY - h / 2) / h);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
-
   const typing = useTyping();
 
   return (
     <section
       id="home"
-      ref={ref}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-24"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24"
     >
-      {/* Animated gradient blobs */}
-      <motion.div
-        style={{ x: x1, y: y1 }}
-        className="absolute -left-32 top-20 h-[420px] w-[420px] rounded-full bg-highlight/30 blur-[120px]"
-        animate={{ scale: [1, 1.15, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      {/* Subtle radial spotlight */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[560px] w-[900px] -translate-x-1/2 -translate-y-1/2"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, color-mix(in oklab, var(--foreground) 6%, transparent) 0%, transparent 70%)",
+        }}
       />
-      <motion.div
-        style={{ x: x2, y: y2 }}
-        className="absolute -right-32 bottom-10 h-[480px] w-[480px] rounded-full bg-purple-400/20 blur-[140px] dark:bg-purple-500/20"
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-      <motion.div
-        style={{ x: x1, y: y2 }}
-        className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-pink-300/15 blur-[120px] dark:bg-pink-500/10"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      {/* Fine grid texture */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.035] dark:opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "radial-gradient(currentColor 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
+          color: "var(--foreground)",
+          maskImage:
+            "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+        }}
       />
 
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/80 bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur"
-        >
-          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-          Available for opportunities
+      <div className="relative w-full max-w-5xl flex flex-col items-center text-center">
+        {/* Status Badge */}
+        <motion.div variants={reveal} initial="hidden" animate="show" custom={0.1}>
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Available for new opportunities
+          </span>
         </motion.div>
 
+        {/* Name */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-[88px]"
+          variants={reveal}
+          initial="hidden"
+          animate="show"
+          custom={0.2}
+          className="mt-8 text-balance text-6xl font-extrabold leading-[0.95] tracking-tight text-foreground sm:text-7xl md:text-8xl"
         >
           Aaryan Chandale
         </motion.h1>
 
+        {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg"
+          variants={reveal}
+          initial="hidden"
+          animate="show"
+          custom={0.3}
+          className="mt-5 text-sm font-medium uppercase tracking-[0.25em] text-muted-foreground"
         >
           B.Tech Computer Science Student
         </motion.p>
 
+        {/* Typing role */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="mt-3 flex items-center justify-center text-lg font-medium sm:text-xl"
+          variants={reveal}
+          initial="hidden"
+          animate="show"
+          custom={0.4}
+          className="mt-6 flex h-12 items-center justify-center text-2xl font-medium text-muted-foreground sm:text-3xl"
         >
-          <span className="text-foreground/80">I'm an&nbsp;</span>
-          <span className="gradient-text inline-block min-w-[180px] text-left font-semibold sm:min-w-[260px]">
+          <span>I'm a&nbsp;</span>
+          <span className="inline-flex min-w-[14ch] justify-start text-left font-semibold text-foreground">
             {typing}
-            <span className="ml-0.5 inline-block h-[1.1em] w-[2px] -translate-y-[2px] animate-pulse bg-highlight align-middle" />
+            <span className="ml-0.5 inline-block h-[1.1em] w-[2px] -translate-y-[2px] animate-pulse bg-foreground align-middle" />
           </span>
         </motion.div>
 
+        {/* Tagline */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-          className="mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg"
+          variants={reveal}
+          initial="hidden"
+          animate="show"
+          custom={0.5}
+          className="mt-8 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground"
         >
-          I build intelligent software solutions using Artificial Intelligence,
-          Machine Learning, and Modern Web Technologies.
+          Building intelligent software with Artificial Intelligence,
+          Machine Learning, and modern web technologies.
         </motion.p>
 
+        {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.75 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
+          variants={reveal}
+          initial="hidden"
+          animate="show"
+          custom={0.6}
+          className="mt-12 flex flex-col items-center gap-4 sm:flex-row"
         >
-          <motion.a
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+          <a
             href="#projects"
             onClick={(e) => {
               e.preventDefault();
               document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background shadow-lg shadow-black/10 transition-all"
+            className="group relative inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-8 py-4 text-sm font-semibold text-background shadow-xl shadow-foreground/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-foreground/20 active:scale-[0.98]"
           >
-            View Projects
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </motion.a>
-          <motion.a
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            View Selected Works
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </a>
+          <a
             href="#contact"
             onClick={(e) => {
               e.preventDefault();
               document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-6 py-3 text-sm font-medium text-foreground backdrop-blur transition-all hover:bg-secondary"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-8 py-4 text-sm font-semibold text-foreground transition-all duration-300 hover:bg-secondary"
           >
             <Mail className="h-4 w-4" />
-            Contact Me
-          </motion.a>
+            Get in Touch
+          </a>
         </motion.div>
+
+        {/* Micro footer */}
+        <motion.p
+          variants={reveal}
+          initial="hidden"
+          animate="show"
+          custom={0.8}
+          className="mt-20 text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground/70"
+        >
+          AI · Machine Learning · Full Stack · Data
+        </motion.p>
       </div>
 
+      {/* Scroll cue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.25em] text-muted-foreground"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
