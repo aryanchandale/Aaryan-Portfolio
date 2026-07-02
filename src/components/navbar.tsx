@@ -90,6 +90,28 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <button
+              onClick={toggleCursor}
+              aria-label={customCursor ? "Use normal cursor" : "Use custom cursor"}
+              className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={customCursor ? "custom" : "normal"}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="grid place-items-center"
+                >
+                  {customCursor ? (
+                    <MousePointerClick className="h-4 w-4" />
+                  ) : (
+                    <MousePointer className="h-4 w-4" />
+                  )}
+                </motion.span>
+              </AnimatePresence>
+            </button>
+            <button
               onClick={toggle}
               aria-label="Toggle theme"
               className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary"
