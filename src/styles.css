@@ -107,6 +107,13 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+  @media (pointer: fine) {
+    html:not(.custom-cursor-off) *,
+    html:not(.custom-cursor-off) *::before,
+    html:not(.custom-cursor-off) *::after {
+      cursor: none !important;
+    }
+  }
 }
 
 @utility glass {
