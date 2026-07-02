@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "./theme-provider";
 
 export function CustomCursor() {
+  const { customCursor } = useTheme();
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [hovering, setHovering] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -23,7 +25,7 @@ export function CustomCursor() {
     };
   }, []);
 
-  if (!visible) return null;
+  if (!visible || !customCursor) return null;
   return (
     <>
       <div
@@ -45,3 +47,4 @@ export function CustomCursor() {
     </>
   );
 }
+
