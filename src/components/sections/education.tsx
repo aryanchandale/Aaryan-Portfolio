@@ -1,17 +1,27 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { GraduationCap, Award } from "lucide-react";
+import { GraduationCap, Award, Eye } from "lucide-react";
 import { Section, SectionTitle } from "../section";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
+import awsCert from "@/assets/certs/aws.png.asset.json";
+import cnCert from "@/assets/certs/CN.png.asset.json";
+import dbmsCert from "@/assets/certs/DBMS.png.asset.json";
+import dlCert from "@/assets/certs/DL.png.asset.json";
+import osCert from "@/assets/certs/OS.png.asset.json";
+import daCert from "@/assets/certs/DA_PY.png.asset.json";
 
-const CERTS = [
-  "AWS Cloud",
-  "Deep Learning – ANN with TensorFlow",
-  "Operating Systems (Cisco)",
-  "Database Management Systems (Coursera)",
-  "Data Analysis using Python",
-  "Computer Networking (Cisco)",
+const CERTS: { title: string; image: string }[] = [
+  { title: "AWS Academy — Cloud Foundations", image: awsCert.url },
+  { title: "Computer Networking (Cisco)", image: cnCert.url },
+  { title: "Database Management Systems (Meta · Coursera)", image: dbmsCert.url },
+  { title: "Deep Learning — ANN with TensorFlow", image: dlCert.url },
+  { title: "Operating Systems (Cisco)", image: osCert.url },
+  { title: "Data Analysis using Python (UPenn · Coursera)", image: daCert.url },
 ];
 
 export function Education() {
+  const [active, setActive] = useState<{ title: string; image: string } | null>(null);
+
   return (
     <Section id="education">
       <SectionTitle eyebrow="Education" title="Learning, credentialed and continuous." />
@@ -57,20 +67,44 @@ export function Education() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {CERTS.map((c, i) => (
             <motion.div
-              key={c}
+              key={c.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.06 }}
               whileHover={{ y: -4 }}
-              className="group rounded-2xl border border-border bg-card p-5 transition-all hover:shadow-lg"
+              className="group flex flex-col justify-between gap-4 rounded-2xl border border-border bg-card p-5 transition-all hover:shadow-lg"
             >
-              <div className="text-sm font-medium leading-snug">{c}</div>
-              <div className="mt-2 h-px w-8 bg-highlight transition-all group-hover:w-16" />
+              <div>
+                <div className="text-sm font-medium leading-snug">{c.title}</div>
+                <div className="mt-2 h-px w-8 bg-highlight transition-all group-hover:w-16" />
+              </div>
+              <button
+                type="button"
+                onClick={() => setActive(c)}
+                className="inline-flex w-fit items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
+              >
+                <Eye className="h-3.5 w-3.5" /> View certificate
+              </button>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
+        <DialogContent className="max-w-5xl border-border bg-card p-2 sm:p-3">
+          <DialogTitle className="sr-only">{active?.title ?? "Certificate"}</DialogTitle>
+          {active && (
+            <div className="overflow-hidden rounded-lg bg-background">
+              <img
+                src={active.image}
+                alt={active.title}
+                className="h-auto w-full object-contain"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </Section>
   );
 }
