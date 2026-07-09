@@ -69,9 +69,45 @@ function Index() {
           <Contact />
         </Suspense>
       </main>
-      <footer className="border-t border-border py-10 text-center text-xs text-muted-foreground">
-        Designed &amp; Developed by{" "}
-        <span className="font-medium text-foreground">Aaryan Chandale</span> © 2026
+      <footer className="border-t border-border">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:py-28 md:py-36">
+          <div className="mx-auto max-w-3xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-highlight"
+            >
+              Get in touch
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
+            >
+              Let's work together.
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mx-auto mt-5 max-w-xl text-pretty text-base text-muted-foreground sm:text-lg"
+            >
+              Have a project in mind or just want to say hello? Drop a message and I'll respond as soon as I can.
+            </motion.p>
+          </div>
+          <div className="mt-14">
+            <ContactForm />
+          </div>
+        </div>
+        <div className="border-t border-border py-10 text-center text-xs text-muted-foreground">
+          Designed &amp; Developed by{" "}
+          <span className="font-medium text-foreground">Aaryan Chandale</span> © 2026
+        </div>
       </footer>
       <ScrollToTop />
     </>
