@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/hero";
 import { ScrollProgress, ScrollToTop } from "@/components/scroll-utils";
 import { Loader } from "@/components/loader";
 import { CustomCursor } from "@/components/custom-cursor";
+import { ContactForm } from "@/components/contact-form";
 import { useLenis } from "@/hooks/use-lenis";
 
 const About = lazy(() => import("@/components/sections/about").then((m) => ({ default: m.About })));
