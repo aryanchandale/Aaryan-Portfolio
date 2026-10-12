@@ -41,7 +41,10 @@ export function ContactForm() {
     e.preventDefault();
     if (status === "sending" || !validate()) return;
 
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
+    // Web3Forms access keys are public by design (they can only deliver to the owner's inbox).
+    const accessKey =
+      (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined) ||
+      "eabaeff7-6b34-4852-837b-1acc3e345b37";
     if (!accessKey) {
       // No key configured yet: fall back to opening the visitor's email client.
       const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name}`);
