@@ -18,10 +18,10 @@ const EXPERIENCES = [
     org: "University Alumni Project · Yoja App",
     period: "July 2023 – Present",
     points: [
-      "Designed databases for the Yoja App",
-      "Built backend using FastAPI and Flask",
-      "Integrated backend with frontend",
-      "Collaborated with cross-functional teams",
+      "Designed and structured the databases that store and serve the Yoja App's core data",
+      "Built backend services and APIs using FastAPI and Flask to power the app's features",
+      "Integrated the backend with the frontend so features work end to end",
+      "Collaborated with cross-functional teams to deliver features and align backend work with product needs",
     ],
   },
 ];
