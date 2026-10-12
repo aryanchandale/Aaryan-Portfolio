@@ -16,7 +16,7 @@ const EXPERIENCES = [
   {
     role: "Backend Developer",
     org: "University Alumni Project · Yoja App",
-    period: "July 2023 – Present",
+    period: "July 2025 – December 2025",
     points: [
       "Designed and structured the databases that store and serve the Yoja App's core data",
       "Built backend services and APIs using FastAPI and Flask to power the app's features",
