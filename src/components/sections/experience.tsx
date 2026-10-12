@@ -4,16 +4,6 @@ import { Section, SectionTitle } from "../section";
 
 const EXPERIENCES = [
   {
-    role: "Machine Learning Intern",
-    org: "Prodigy Infotech",
-    period: "April 2025 – May 2025",
-    points: [
-      "Cleaned and prepared the housing dataset by handling missing values, encoding categorical features and selecting features such as area, bedrooms and bathrooms",
-      "Trained an XGBoost regression model to capture non-linear relationships in the housing data, alongside a Linear Regression baseline",
-      "Visualized feature relationships and prediction errors with Matplotlib/Seaborn to explain what drives price",
-    ],
-  },
-  {
     role: "Backend Developer",
     org: "University Alumni Project · Yoja App",
     period: "July 2025 – December 2025",
@@ -22,6 +12,16 @@ const EXPERIENCES = [
       "Built backend services and APIs using FastAPI and Flask to power the app's features",
       "Integrated the backend with the frontend so features work end to end",
       "Collaborated with cross-functional teams to deliver features and align backend work with product needs",
+    ],
+  },
+  {
+    role: "Machine Learning Intern",
+    org: "Prodigy Infotech",
+    period: "April 2025 – May 2025",
+    points: [
+      "Cleaned and prepared the housing dataset by handling missing values, encoding categorical features and selecting features such as area, bedrooms and bathrooms",
+      "Trained an XGBoost regression model to capture non-linear relationships in the housing data, alongside a Linear Regression baseline",
+      "Visualized feature relationships and prediction errors with Matplotlib/Seaborn to explain what drives price",
     ],
   },
 ];
