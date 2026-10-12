@@ -10,6 +10,7 @@ const EXPERIENCES = [
     points: [
       "Developed a House Price Prediction model using Linear Regression in Python",
       "Cleaned and prepared the housing dataset by handling missing values, encoding categorical features and selecting features such as area, bedrooms and bathrooms",
+      "Trained an XGBoost regression model to capture non-linear relationships in the housing data, alongside a Linear Regression baseline",
       "Visualized feature relationships and prediction errors with Matplotlib/Seaborn to explain what drives price",
     ],
   },
