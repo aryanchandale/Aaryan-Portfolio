@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Check, AlertCircle } from "lucide-react";
+import { Send, Check, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,7 +21,7 @@ interface FormErrors {
 export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const validate = (): boolean => {
     const next: FormErrors = {};
@@ -37,16 +37,52 @@ export function ContactForm() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (status === "sending" || !validate()) return;
 
-    const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    );
-    window.location.href = `mailto:aryanchandale152@gmail.com?subject=${subject}&body=${body}`;
-    setStatus("success");
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
+    if (!accessKey) {
+      // No key configured yet: fall back to opening the visitor's email client.
+      const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      );
+      window.location.href = `mailto:aryanchandale152@gmail.com?subject=${subject}&body=${body}`;
+      setStatus("success");
+      return;
+    }
+
+    // Honeypot: real visitors never fill this hidden field, bots usually do.
+    const honeypot = (new FormData(e.currentTarget).get("botcheck") as string) || "";
+    if (honeypot) {
+      setStatus("success");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `Portfolio inquiry from ${formData.name}`,
+          from_name: "Portfolio Contact Form",
+          name: formData.name,
+          email: formData.email,
+          replyto: formData.email,
+          message: formData.message,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "Request failed");
+      setFormData({ name: "", email: "", message: "" });
+      setStatus("success");
+    } catch (err) {
+      console.error("Contact form error:", err);
+      setStatus("error");
+    }
   };
 
   const handleChange = (field: keyof FormData) => (
@@ -54,7 +90,7 @@ export function ContactForm() {
   ) => {
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
-    if (status === "success") setStatus("idle");
+    if (status === "success" || status === "error") setStatus("idle");
   };
 
   return (
@@ -66,6 +102,15 @@ export function ContactForm() {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto w-full max-w-2xl"
     >
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden="true"
+      />
+
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
@@ -149,10 +194,15 @@ export function ContactForm() {
         <Button
           type="submit"
           size="lg"
+          disabled={status === "sending"}
           className="h-12 w-full rounded-full bg-foreground px-8 text-background hover:bg-foreground/90 sm:w-auto"
         >
-          <Send className="mr-2 h-4 w-4" />
-          Send message
+          {status === "sending" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Send className="mr-2 h-4 w-4" />
+          )}
+          {status === "sending" ? "Sending..." : "Send message"}
         </Button>
 
         <AnimatePresence mode="wait">
@@ -165,7 +215,19 @@ export function ContactForm() {
               className="flex items-center gap-2 text-sm font-medium text-green-600 dark:text-green-400"
             >
               <Check className="h-4 w-4" />
-              Opening your email client...
+              Message sent! I'll get back to you soon.
+            </motion.div>
+          )}
+          {status === "error" && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              className="flex items-center gap-2 text-sm font-medium text-destructive"
+            >
+              <AlertCircle className="h-4 w-4" />
+              Couldn't send your message. Please try again or email me directly.
             </motion.div>
           )}
         </AnimatePresence>
