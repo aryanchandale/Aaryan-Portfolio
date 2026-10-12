@@ -3,20 +3,14 @@ import { motion } from "framer-motion";
 import { GraduationCap, Award, Eye } from "lucide-react";
 import { Section, SectionTitle } from "../section";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
-import awsCert from "@/assets/certs/aws.png.asset.json";
-import cnCert from "@/assets/certs/CN.png.asset.json";
-import dbmsCert from "@/assets/certs/DBMS.png.asset.json";
-import dlCert from "@/assets/certs/DL.png.asset.json";
-import osCert from "@/assets/certs/OS.png.asset.json";
-import daCert from "@/assets/certs/DA_PY.png.asset.json";
 
 const CERTS: { title: string; image: string }[] = [
-  { title: "AWS Academy — Cloud Foundations", image: awsCert.url },
-  { title: "Computer Networking (Cisco)", image: cnCert.url },
-  { title: "Database Management Systems (Meta · Coursera)", image: dbmsCert.url },
-  { title: "Deep Learning — ANN with TensorFlow", image: dlCert.url },
-  { title: "Operating Systems (Cisco)", image: osCert.url },
-  { title: "Data Analysis using Python (UPenn · Coursera)", image: daCert.url },
+  { title: "AWS Academy — Cloud Foundations", image: "/certs/aws.png" },
+  { title: "Computer Networking (Cisco)", image: "/certs/CN.png" },
+  { title: "Database Management Systems (Meta · Coursera)", image: "/certs/DBMS.png" },
+  { title: "Deep Learning — ANN with TensorFlow", image: "/certs/DL.png" },
+  { title: "Operating Systems (Cisco)", image: "/certs/OS.png" },
+  { title: "Data Analysis using Python (UPenn · Coursera)", image: "/certs/DA_PY.png" },
 ];
 
 export function Education() {
